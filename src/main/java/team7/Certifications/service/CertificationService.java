@@ -49,6 +49,7 @@ public class CertificationService {
 
         Certification certification=certificationMapper.toEntity(certificationDto);
         certificationRepository.save(certification);
+        certificationRepository.deleteById(id);
         CertificationDto updatedCertificationDto=certificationMapper.toDto(certification);
 
         return updatedCertificationDto;

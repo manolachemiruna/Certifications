@@ -9,8 +9,7 @@ public class UserDto {
     private String name;
 
     @NotNull
-    private String role;
-
+    private  String password;
 
 
     public Integer getId() {
@@ -21,8 +20,9 @@ public class UserDto {
         return name;
     }
 
-    public String getRole() {
-        return role;
+
+    public String getPassword() {
+        return password;
     }
 
     public void setId(Integer id) {
@@ -33,8 +33,9 @@ public class UserDto {
         this.name = name;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
 

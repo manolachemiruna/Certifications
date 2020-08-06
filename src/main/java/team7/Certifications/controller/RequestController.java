@@ -23,7 +23,7 @@ public class RequestController {
     @Autowired
     private RequestService requestService;
 
-    @PostMapping(value = "/user/addRequest/{userId}/{certificationId}",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/user/userId/{userId}/certificationId/{certificationId}",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RequestDto> createRequest(@PathVariable("userId") int userId,@PathVariable("certificationId") int certificationId,@RequestBody RequestDto requestDto)
     {
         RequestDto newRequest=requestService.addRequest(requestDto,userId,certificationId);

@@ -36,6 +36,7 @@ public class RequestService {
         entityRequest.setUser(user.get());
         Optional<Certification> certification=certificationRepository.findById(certificationId);
         entityRequest.setCertification(certification.get());
+        entityRequest.setApprovalStatus(Status.pending);
         Request savedEntityRequest=this.requestRepository.save(entityRequest);
         RequestDto dto=this.requestMapper.toDto(savedEntityRequest);
 
@@ -49,6 +50,10 @@ public class RequestService {
         existingRequest.orElseThrow(() ->new IllegalArgumentException("there is no such request"));
 
         Request entityRequest =this.requestMapper.toEntity(dtoRequest);
+        entityRequest.setApprovalStatus(existingRequest.get().getApprovalStatus());
+        entityRequest.setCertification(existingRequest.get().getCertification());
+        entityRequest.setUser(existingRequest.get().getUser());
+        requestRepository.deleteById(requestId);
         Request updatedEntityRequest=this.requestRepository.save(entityRequest);
         RequestDto dto=this.requestMapper.toDto(updatedEntityRequest);
         return  dto;

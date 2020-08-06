@@ -6,6 +6,7 @@ import team7.Certifications.dto.UserDto;
 import team7.Certifications.entity.User;
 
 
+
 @Component
 public class UserMapper {
 
@@ -13,12 +14,14 @@ public class UserMapper {
     @Autowired
     private RequestMapper requestMapper;
 
+
     public UserDto toDto(User userEntity)
     {
         UserDto dto =new UserDto();
         dto.setId(userEntity.getId());
         dto.setName(userEntity.getName());
-        dto.setRole(userEntity.getRole());
+        dto.setPassword(userEntity.getPassword());
+
 
 
         return dto;
@@ -27,9 +30,11 @@ public class UserMapper {
     public User toEntity(UserDto userDto)
     {
         User user=new User();
-        user.setId(userDto.getId());
         user.setName(userDto.getName());
-        user.setRole(userDto.getRole());
+        user.setRole("user");
+        user.setPassword(userDto.getPassword());
+        user.setPermissions("USER_ACCESS");
+        user.setActive(1);
 
         return user;
     }
