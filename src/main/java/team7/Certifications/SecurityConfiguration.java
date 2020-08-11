@@ -13,11 +13,13 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import org.springframework.web.cors.CorsConfiguration;
 import team7.Certifications.repository.UserRepository;
 import team7.Certifications.security.JwtAuthenticationFilter;
 import team7.Certifications.security.JwtAuthorizationFilter;
 import team7.Certifications.security.UserPrincipalDetailsService;
 
+import java.util.Arrays;
 
 
 @Configuration
@@ -40,8 +42,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                //.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues())
-                //.and()
+                .cors().configurationSource(request ->
+        {
+
+            CorsConfiguration configuration=new CorsConfiguration().applyPermitDefaultValues();
+            CorsConfiguration other = new CorsConfiguration();
+            other.setAllowedOrigins(Arrays.asList("*"));
+            other.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE","PATCH"));
+            CorsConfiguration combinedConfig = configuration.combine(other);
+            return combinedConfig;
+
+        })
+                .and()
                 // remove csrf and state in session because in jwt we do not need them(they are good in form auth)
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
