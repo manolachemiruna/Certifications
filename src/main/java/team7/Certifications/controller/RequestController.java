@@ -30,10 +30,10 @@ public class RequestController {
         return  ResponseEntity.status(HttpStatus.CREATED).body(newRequest);
     }
 
-    @GetMapping(value="/user/allRequests/{userId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<RequestDto>> getAllRequests(@PathVariable("userId") int userId)
+    @GetMapping(value="/user/allRequests/{participantName}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<RequestDto>> getAllRequests(@PathVariable("participantName") String participantName)
     {
-        List<RequestDto> requestsDto=requestService.getRequestsByUserId(userId);
+        List<RequestDto> requestsDto=requestService.getRequestsByParticipantName(participantName);
         return ResponseEntity.ok().body(requestsDto);
     }
 
@@ -89,7 +89,7 @@ public class RequestController {
          return ResponseEntity.ok().body(updatedRequest);
     }
 
-    @PatchMapping(value="/admin/approveRequest/{id}",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping(value="/admin/updateRequestStatus/{id}",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RequestDto> approveRequest(@PathVariable("id") Integer id, @RequestBody StatusDto statusDto)
     {
         String status=statusDto.getStatus();

@@ -1,10 +1,12 @@
 package team7.Certifications.service;
 
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import team7.Certifications.dto.CertificationDto;
 import team7.Certifications.entity.Certification;
 import team7.Certifications.entity.Request;
+import team7.Certifications.exceptions.CustomException;
 import team7.Certifications.mapper.CertificationMapper;
 import team7.Certifications.repository.CertificationRepository;
 import team7.Certifications.repository.RequestRepository;
@@ -35,6 +37,7 @@ public class CertificationService {
 
     public CertificationDto addCertification(CertificationDto certificationDto)
     {
+        if(certificationDto.getId()!=null)throw new CustomException(HttpStatus.EXPECTATION_FAILED,"New certification should not have an ID");
         Certification certification=certificationMapper.toEntity(certificationDto);
         Certification savedCertification=certificationRepository.save(certification);
         CertificationDto dtoCertification=certificationMapper.toDto(savedCertification);
@@ -45,7 +48,7 @@ public class CertificationService {
     public CertificationDto updateCertification(Integer id,CertificationDto certificationDto)
     {
         Optional<Certification> existingCertification=certificationRepository.findById(id);
-        existingCertification.orElseThrow(()->new IllegalArgumentException("there is no such certification"));
+        existingCertification.orElseThrow(()->new CustomException(HttpStatus.NOT_FOUND,"Certification with id:"+id+" not found"));
 
         Certification certification=certificationMapper.toEntity(certificationDto);
         certificationRepository.save(certification);
@@ -57,7 +60,7 @@ public class CertificationService {
     public void deleteCertification (int id)
     {
         Optional<Certification> existingCertification=certificationRepository.findById(id);
-        existingCertification.orElseThrow(()->new IllegalArgumentException("there is no such certification"));
+        existingCertification.orElseThrow(()->new CustomException(HttpStatus.NOT_FOUND,"Certification with id:"+id+" not found"));
         List<Request> requests=this.requestRepository.findByCertificationId(id);
         Iterator<Request> iterator=requests.iterator();
         while (iterator.hasNext())
